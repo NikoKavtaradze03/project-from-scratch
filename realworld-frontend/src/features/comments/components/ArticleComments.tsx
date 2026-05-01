@@ -31,7 +31,7 @@ function ArticleComments({ slug }: ArticleCommentsProps) {
   }
 
   return (
-    <section className="space-y-4 border-t border-(--color-border) pt-4 mt-4">
+    <section className="space-y-4 border rounded-md border-(--color-border) p-4 mt-4">
       <h2 className="text-lg font-semibold text-(--color-text)">Comments</h2>
       <CreateComment slug={slug} />
       <CommentList comments={commentsResponse?.comments || []} slug={slug} />
