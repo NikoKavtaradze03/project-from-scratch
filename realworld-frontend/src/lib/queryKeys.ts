@@ -12,4 +12,8 @@ export const queryKeys = {
   auth: {
     currentUser: ["auth", "currentUser"] as const,
   },
+
+  comments: {
+    byArticle: (slug: string) => ["comments", slug] as const,
+  },
 };
