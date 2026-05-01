@@ -8,14 +8,14 @@ type ArticleFavoriteButtonProps = {
   slug: string;
   favoritesCount: number;
   favorited: boolean;
-  style: string;
+  className: string;
 };
 
 function ArticleFavoriteButton({
   slug,
   favoritesCount,
   favorited,
-  style,
+  className,
 }: ArticleFavoriteButtonProps) {
   const queryClient = useQueryClient();
   const favoriteMutation = useMutation({
@@ -37,7 +37,7 @@ function ArticleFavoriteButton({
     <Button
       variant="outline"
       size="sm"
-      className={`${style} ${favorited ? "bg-(--color-accent) text-(--color-text)" : ""}`}
+      className={`${className} ${favorited ? "bg-(--color-accent) text-(--color-text)" : ""}`}
       onClick={() => favoriteMutation.mutate()}
       disabled={favoriteMutation.isPending}
     >

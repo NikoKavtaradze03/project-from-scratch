@@ -24,7 +24,7 @@ function ArticlePreviewCard({ article }: ArticlePreviewCardProps) {
             slug={article.slug}
             favoritesCount={article.favoritesCount}
             favorited={article.favorited}
-            style={buttonStyle}
+            className={buttonStyle}
           />
         </CardAction>
 

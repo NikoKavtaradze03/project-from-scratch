@@ -60,7 +60,7 @@ function ArticleActions({ article, isAuthor }: ArticleActionsProps) {
         slug={article.slug}
         favoritesCount={article.favoritesCount}
         favorited={article.favorited}
-        style={actionButtonStyle}
+        className={actionButtonStyle}
       />
     </div>
   );

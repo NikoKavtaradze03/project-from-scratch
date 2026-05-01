@@ -40,7 +40,7 @@ export function CommentList({ slug, comments }: CommentListProps) {
             <ArticleMeta
               username={comment.author.username}
               createdAt={comment.createdAt}
-              image={null}
+              image={comment.author.image}
             />
             {currentUser?.username === comment.author.username && (
               <Button

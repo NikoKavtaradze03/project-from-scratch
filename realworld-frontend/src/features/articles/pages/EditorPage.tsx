@@ -6,16 +6,34 @@ import PageHeader from "@/components/layout/PageHeader";
 import { queryKeys } from "@/lib/queryKeys";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 
-import { createArticle, getArticle, updateArticle } from "../api/articlesApi";
+import {
+  createArticle,
+  getArticle,
+  updateArticle,
+  type Article,
+} from "../api/articlesApi";
 
-import ArticleEditorForm from "../components/ArticleEditorForm";
+import ArticleEditorForm, {
+  type ArticleEditorFormValues,
+} from "../components/ArticleEditorForm";
 
-type ArticleEditorFormValues = {
-  title: string;
-  description: string;
-  body: string;
-  tags: string;
-};
+function getArticleEditorInitialValues(
+  article: Article,
+): ArticleEditorFormValues {
+  return {
+    title: article.title,
+    description: article.description,
+    body: article.body,
+    tags: article.tagList.join(", "),
+  };
+}
+
+function parseArticleTags(tags: string) {
+  return tags
+    .split(",")
+    .map((tag) => tag.trim())
+    .filter(Boolean);
+}
 
 function EditorPage() {
   const navigate = useNavigate();
@@ -94,19 +112,11 @@ function EditorPage() {
 
   const initialValues =
     isEditMode && articleResponse
-      ? {
-          title: articleResponse.article.title,
-          description: articleResponse.article.description,
-          body: articleResponse.article.body,
-          tags: articleResponse.article.tagList.join(", "),
-        }
+      ? getArticleEditorInitialValues(articleResponse.article)
       : undefined;
 
   async function handleSubmit(values: ArticleEditorFormValues) {
-    const tagList = values.tags
-      .split(",")
-      .map((tag) => tag.trim())
-      .filter(Boolean);
+    const tagList = parseArticleTags(values.tags);
 
     if (isEditMode && slug) {
       await updateArticleMutation.mutateAsync({
