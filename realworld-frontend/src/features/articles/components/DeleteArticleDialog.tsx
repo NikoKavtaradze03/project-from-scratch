@@ -18,7 +18,7 @@ type DeleteArticleDialogProps = {
 };
 
 const dangerButtonStyle =
-  "h-full cursor-pointer border-(--color-danger) text-(--color-danger) hover:bg-(--color-danger) hover:text-(--color-text) disabled:cursor-not-allowed";
+  "h-full cursor-pointer border-(--color-danger) text-(--color-danger) hover:bg-(--color-danger) hover:text-(--color-text) disabled:cursor-not-allowed py-2";
 
 const dangerActionStyle =
   "bg-(--color-danger) font-bold text-(--color-text) hover:bg-red-500";
