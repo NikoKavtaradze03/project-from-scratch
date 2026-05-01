@@ -13,7 +13,7 @@ type ArticleActionsProps = {
 };
 
 const actionButtonStyle =
-  "h-full cursor-pointer border-(--color-accent) text-(--color-accent) hover:bg-(--color-accent-hover) hover:text-(--color-text)";
+  "h-full cursor-pointer border-(--color-accent) text-(--color-accent) hover:bg-(--color-accent-hover) hover:text-(--color-text) py-2";
 
 function ArticleActions({ article, isAuthor }: ArticleActionsProps) {
   const navigate = useNavigate();
