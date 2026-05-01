@@ -11,6 +11,7 @@ import ArticleContent from "../components/ArticleContent";
 
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import ArticleActions from "../components/ArticleActions";
+import ArticleComments from "@/features/comments/components/ArticleComments";
 
 function ArticlePageMessage({ children }: { children: ReactNode }) {
   return (
@@ -83,6 +84,7 @@ function ArticlePage() {
             </p>
           </section>
         </article>
+        <ArticleComments slug={article.slug} />
       </PageContainer>
     </main>
   );

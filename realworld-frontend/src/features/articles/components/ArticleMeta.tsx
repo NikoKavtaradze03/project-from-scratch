@@ -9,7 +9,7 @@ type ArticleMetaProps = {
 
 function ArticleMeta({ username, image, createdAt }: ArticleMetaProps) {
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-3 items-center">
       <UserAvatar username={username} image={image} />
       <div>
         <CardTitle>{username}</CardTitle>
