@@ -43,9 +43,7 @@ function ArticleActions({ article, isAuthor }: ArticleActionsProps) {
         <DeleteArticleDialog
           isDeleting={deleteMutation.isPending}
           errorMessage={
-            deleteMutation.isError
-              ? deleteMutation.error.message
-              : undefined
+            deleteMutation.isError ? deleteMutation.error.message : undefined
           }
           onDelete={() => deleteMutation.mutate()}
         />
@@ -59,6 +57,7 @@ function ArticleActions({ article, isAuthor }: ArticleActionsProps) {
         Follow {article.author.username}
       </Button>
       <ArticleFavoriteButton
+        slug={article.slug}
         favoritesCount={article.favoritesCount}
         favorited={article.favorited}
         style={actionButtonStyle}
