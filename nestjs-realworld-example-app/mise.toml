@@ -1,0 +1,31 @@
+[tasks.vendor]
+run = "pnpm i"
+
+[tasks.lint]
+run = "pnpm lint"
+
+[tasks.build]
+run = [
+  "pnpm prisma generate",
+  "pnpm build"
+]
+
+[tasks.test]
+run = [
+  "pnpm prisma migrate deploy",
+  "pnpm test --coverage"
+]
+
+[tasks.scan]
+run = "sonar-scanner"
+
+[tasks.ci]
+run = [
+  { tasks = ["lint", "build", "test"] },
+]
+depends = ["vendor"]
+
+[tools]
+node = "24"
+pnpm = "10"
+sonar-scanner-cli = "8"
