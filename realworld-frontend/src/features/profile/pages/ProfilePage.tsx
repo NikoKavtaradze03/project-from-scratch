@@ -4,15 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import PageContainer from "@/components/layout/PageContainer";
 import { queryKeys } from "@/lib/queryKeys";
 import { getProfile } from "../api/profileApi";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-import ArticleFeed from "@/features/articles/components/ArticleFeed";
-
 import UserAvatar from "@/components/shared/UserAvatar";
-
 import FollowButton from "../components/FollowButton";
-
-const tabStyle = "data-active:bg-(--color-accent)";
+import { ProfileTabs } from "../components/ProfileTabs";
 
 function ProfilePage() {
   const { username } = useParams({ from: "/profile/$username" });
@@ -75,24 +69,7 @@ function ProfilePage() {
             ></FollowButton>
           </div>
         </section>
-        <Tabs defaultValue="articles">
-          <TabsList className="bg bg-(--color-surface-elevated) border border-(--color-border) mt-6 mb-2">
-            <TabsTrigger className={tabStyle} value="articles">
-              My Articles
-            </TabsTrigger>
-            <TabsTrigger className={tabStyle} value="favorited">
-              Favorited Articles
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="articles">
-            <ArticleFeed author={profile.username} />
-          </TabsContent>
-
-          <TabsContent value="favorited">
-            <ArticleFeed favorited={profile.username} />
-          </TabsContent>
-        </Tabs>
+        <ProfileTabs profile={profile} />
       </PageContainer>
     </main>
   );
