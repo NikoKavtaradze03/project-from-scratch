@@ -4,6 +4,7 @@ import { queryKeys } from "@/lib/queryKeys";
 import { followProfile, unfollowProfile } from "../api/profileApi";
 import { UserPlus, UserMinus } from "lucide-react";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { useNavigate } from "@tanstack/react-router";
 
 type FollowButtonProps = {
   username: string;
@@ -15,6 +16,7 @@ function FollowButton({ username, following }: FollowButtonProps) {
   const Icon = following ? UserMinus : UserPlus;
   const { data: currentUserResponse } = useCurrentUser();
   const currentUser = currentUserResponse?.user;
+  const navigate = useNavigate();
 
   const followMutation = useMutation({
     mutationFn: () =>
@@ -28,24 +30,26 @@ function FollowButton({ username, following }: FollowButtonProps) {
   });
 
   return (
-currentUser?.username !== username && (
-   <Button
-      type="button"
-      variant="outline"
-      disabled={followMutation.isPending}
-      onClick={() => followMutation.mutate()}
-      className="border-(--color-accent) text-(--color-accent) hover:bg-(--color-accent-hover) hover:text-white cursor-pointer"
-    >
-      {
-        <>
-          <Icon size={16} strokeWidth={3} />
-          {following ? "Unfollow" : "Follow"} {username}
-        </>
-      }
-    </Button>
-)
-
-   
+    currentUser?.username !== username && (
+      <Button
+        type="button"
+        variant="outline"
+        disabled={followMutation.isPending}
+        onClick={
+          !currentUser
+            ? () => navigate({ to: "/login" })
+            : () => followMutation.mutate()
+        }
+        className="border-(--color-accent) text-(--color-accent) hover:bg-(--color-accent-hover) hover:text-white cursor-pointer"
+      >
+        {
+          <>
+            <Icon size={16} strokeWidth={3} />
+            {following ? "Unfollow" : "Follow"} {username}
+          </>
+        }
+      </Button>
+    )
   );
 }
 
