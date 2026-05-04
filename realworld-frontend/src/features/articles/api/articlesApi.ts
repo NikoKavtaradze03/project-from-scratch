@@ -23,12 +23,41 @@ type GetArticlesResponse = {
   articlesCount: number;
 };
 
-export function getArticles(page = 1, limit = 10) {
+type GetArticlesParams = {
+  page?: number;
+  limit?: number;
+  author?: string;
+  favorited?: string;
+  tag?: string;
+};
+
+export function getArticles({
+  page = 1,
+  limit = 10,
+  author,
+  favorited,
+  tag,
+}: GetArticlesParams = {}) {
   const offset = (page - 1) * limit;
 
-  return apiFetch<GetArticlesResponse>(
-    `/articles?limit=${limit}&offset=${offset}`,
-  );
+  const params = new URLSearchParams();
+
+  params.set("limit", String(limit));
+  params.set("offset", String(offset));
+
+  if (author) {
+    params.set("author", author);
+  }
+
+  if (favorited) {
+    params.set("favorited", favorited);
+  }
+
+  if (tag) {
+    params.set("tag", tag);
+  }
+
+  return apiFetch<GetArticlesResponse>(`/articles?${params.toString()}`);
 }
 
 type GetArticleResponse = {

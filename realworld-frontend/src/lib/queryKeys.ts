@@ -5,7 +5,12 @@ export const queryKeys = {
 
   articles: {
     all: ["articles"] as const,
-    list: (page: number) => ["articles", "list", page] as const,
+    list: (params: {
+      page: number;
+      author?: string;
+      favorited?: string;
+      tag?: string;
+    }) => ["articles", "list", params] as const,
     detail: (slug: string) => ["articles", "detail", slug] as const,
   },
 
@@ -15,5 +20,9 @@ export const queryKeys = {
 
   comments: {
     byArticle: (slug: string) => ["comments", slug] as const,
+  },
+
+  profile: {
+    detail: (username: string) => ["profile", username] as const,
   },
 };
