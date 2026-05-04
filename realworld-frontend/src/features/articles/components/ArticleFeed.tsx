@@ -9,7 +9,7 @@ type ArticleFeedProps = {
   author?: string;
   favorited?: string;
   tag?: string;
-  feedType?: "global" | "personal";
+  feedType?: "global" | "personal" | "tag";
 };
 
 export default function ArticleFeed({
