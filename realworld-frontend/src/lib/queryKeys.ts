@@ -10,6 +10,7 @@ export const queryKeys = {
       author?: string;
       favorited?: string;
       tag?: string;
+      feedType?: string;
     }) => ["articles", "list", params] as const,
     detail: (slug: string) => ["articles", "detail", slug] as const,
   },

@@ -60,6 +60,25 @@ export function getArticles({
   return apiFetch<GetArticlesResponse>(`/articles?${params.toString()}`);
 }
 
+type GetFeedArticlesParams = {
+  page?: number;
+  limit?: number;
+};
+
+export function getFeedArticles({
+  page = 1,
+  limit = 10,
+}: GetFeedArticlesParams = {}) {
+  const offset = (page - 1) * limit;
+
+  const params = new URLSearchParams();
+
+  params.set("limit", String(limit));
+  params.set("offset", String(offset));
+
+  return apiFetch<GetArticlesResponse>(`/articles/feed?${params.toString()}`);
+}
+
 type GetArticleResponse = {
   article: Article;
 };
