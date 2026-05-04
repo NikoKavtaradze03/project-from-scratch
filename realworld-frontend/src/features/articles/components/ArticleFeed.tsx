@@ -5,7 +5,12 @@ import { getArticles } from "../api/articlesApi";
 import { useState } from "react";
 import Pagination from "@/components/shared/pagination";
 
-export default function ArticleFeed() {
+type ArticleFeedProps = {
+  author?: string;
+  favorited?: string;
+};
+
+export default function ArticleFeed({ author, favorited }: ArticleFeedProps) {
   const [page, setPage] = useState(1);
   const ARTICLES_PER_PAGE = 10;
 
@@ -14,8 +19,9 @@ export default function ArticleFeed() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: queryKeys.articles.list(page),
-    queryFn: () => getArticles({ page, limit: ARTICLES_PER_PAGE }),
+    queryKey: queryKeys.articles.list({ page, author, favorited }),
+    queryFn: () =>
+      getArticles({ page, limit: ARTICLES_PER_PAGE, author, favorited }),
   });
 
   const totalPages = articlesResponse

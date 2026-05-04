@@ -15,6 +15,10 @@ const sizeStyles = {
     avatar: "",
     fallback: "text-sm",
   },
+  large: {
+    avatar: "size-20",
+    fallback: "text-lg",
+  },
 };
 
 function UserAvatar({ username, image, size = "default" }: UserAvatarProps) {
