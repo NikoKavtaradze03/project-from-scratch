@@ -79,7 +79,7 @@ function SettingsPage() {
 
   return (
     <main>
-      <PageContainer variant="auth">
+      <PageContainer variant="reading">
         <PageHeader
           title="Settings"
           description="Update your profile and account information."

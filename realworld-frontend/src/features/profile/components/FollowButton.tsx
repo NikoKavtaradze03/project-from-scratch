@@ -26,6 +26,9 @@ function FollowButton({ username, following }: FollowButtonProps) {
       await queryClient.invalidateQueries({
         queryKey: queryKeys.profile.detail(username),
       });
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.articles.all,
+      });
     },
   });
 
@@ -40,7 +43,7 @@ function FollowButton({ username, following }: FollowButtonProps) {
             ? () => navigate({ to: "/login" })
             : () => followMutation.mutate()
         }
-        className="border-(--color-accent) text-(--color-accent) hover:bg-(--color-accent-hover) hover:text-white cursor-pointer"
+        className="border-(--color-accent) text-(--color-accent) hover:bg-(--color-accent-hover) hover:text-white cursor-pointer h-9"
       >
         {
           <>

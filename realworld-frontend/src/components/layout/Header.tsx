@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import PageContainer from "./PageContainer";
-import { House, LogIn, Settings, SquarePen } from "lucide-react";
+import { House, LogIn, LogOut, Settings, SquarePen } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/queryKeys";
 import { getCurrentUser } from "@/features/auth/api/authApi";
@@ -82,6 +82,7 @@ function Header() {
                   onClick={handleLogout}
                   className="bg-(--color-danger) font-bold text-white transition-colors hover:bg-red-500 cursor-pointer"
                 >
+                  <LogOut size={16} strokeWidth={3} />
                   LOGOUT
                 </Button>
               </>

@@ -24,15 +24,12 @@ function getArticleEditorInitialValues(
     title: article.title,
     description: article.description,
     body: article.body,
-    tags: article.tagList.join(", "),
+    tagList: article.tagList,
   };
 }
 
-function parseArticleTags(tags: string) {
-  return tags
-    .split(",")
-    .map((tag) => tag.trim())
-    .filter(Boolean);
+function parseArticleTags(tagList: string[]) {
+  return tagList.map((tag) => tag.trim()).filter((tag) => tag.length > 0);
 }
 
 function EditorPage() {
@@ -116,7 +113,7 @@ function EditorPage() {
       : undefined;
 
   async function handleSubmit(values: ArticleEditorFormValues) {
-    const tagList = parseArticleTags(values.tags);
+    const tagList = parseArticleTags(values.tagList);
 
     if (isEditMode && slug) {
       await updateArticleMutation.mutateAsync({

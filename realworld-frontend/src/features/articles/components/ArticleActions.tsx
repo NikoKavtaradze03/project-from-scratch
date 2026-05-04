@@ -6,6 +6,7 @@ import { deleteArticle, type Article } from "../api/articlesApi";
 import { queryKeys } from "@/lib/queryKeys";
 import ArticleFavoriteButton from "./ArticleFavoriteButton";
 import DeleteArticleDialog from "./DeleteArticleDialog";
+import FollowButton from "@/features/profile/components/FollowButton";
 
 type ArticleActionsProps = {
   article: Article;
@@ -13,7 +14,7 @@ type ArticleActionsProps = {
 };
 
 const actionButtonStyle =
-  "h-full cursor-pointer border-(--color-accent) text-(--color-accent) hover:bg-(--color-accent-hover) hover:text-(--color-text) py-2";
+  "h-9 cursor-pointer border-(--color-accent) text-(--color-accent) hover:bg-(--color-accent-hover) hover:text-(--color-text) py-2";
 
 function ArticleActions({ article, isAuthor }: ArticleActionsProps) {
   const navigate = useNavigate();
@@ -53,9 +54,10 @@ function ArticleActions({ article, isAuthor }: ArticleActionsProps) {
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <Button variant="outline" className={actionButtonStyle}>
-        Follow {article.author.username}
-      </Button>
+      <FollowButton
+        username={article.author.username}
+        following={article.author.following}
+      />
       <ArticleFavoriteButton
         slug={article.slug}
         favoritesCount={article.favoritesCount}
