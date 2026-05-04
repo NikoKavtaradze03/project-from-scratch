@@ -10,6 +10,8 @@ import ArticleFeed from "@/features/articles/components/ArticleFeed";
 
 import UserAvatar from "@/components/shared/UserAvatar";
 
+import FollowButton from "../components/FollowButton";
+
 const tabStyle = "data-active:bg-(--color-accent)";
 
 function ProfilePage() {
@@ -53,7 +55,7 @@ function ProfilePage() {
   return (
     <main>
       <PageContainer>
-        <section className="rounded-2xl border border-(--color-border) bg-(--color-surface-elevated) p-6 flex flex-col items-center text-center align-center gap-2">
+        <section className=" relative rounded-2xl border border-(--color-border) bg-(--color-surface-elevated) p-6 flex flex-col items-center text-center align-center gap-2">
           <UserAvatar
             username={profile.username}
             size="large"
@@ -66,11 +68,17 @@ function ProfilePage() {
           <p className="mt-2 text-sm text-(--color-text-secondary) max-w-200">
             {profile.bio ?? "No bio yet."}
           </p>
+          <div className="flex justify-end w-full mt-2">
+            <FollowButton
+              username={profile.username}
+              following={profile.following}
+            ></FollowButton>
+          </div>
         </section>
         <Tabs defaultValue="articles">
           <TabsList className="bg bg-(--color-surface-elevated) border border-(--color-border) mt-6 mb-2">
             <TabsTrigger className={tabStyle} value="articles">
-              {profile.username}'s Articles
+              My Articles
             </TabsTrigger>
             <TabsTrigger className={tabStyle} value="favorited">
               Favorited Articles

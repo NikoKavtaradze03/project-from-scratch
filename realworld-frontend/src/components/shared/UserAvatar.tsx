@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 type UserAvatarProps = {
   username: string;
   image?: string | null;
-  size?: "sm" | "default";
+  size?: "sm" | "default" | "large";
 };
 
 const sizeStyles = {
@@ -17,7 +17,7 @@ const sizeStyles = {
   },
   large: {
     avatar: "size-20",
-    fallback: "text-lg",
+    fallback: "text-xl",
   },
 };
 
