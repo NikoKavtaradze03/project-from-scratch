@@ -15,7 +15,7 @@ export default function ArticleFeed() {
     isError,
   } = useQuery({
     queryKey: queryKeys.articles.list(page),
-    queryFn: () => getArticles(page, ARTICLES_PER_PAGE),
+    queryFn: () => getArticles({ page, limit: ARTICLES_PER_PAGE }),
   });
 
   const totalPages = articlesResponse

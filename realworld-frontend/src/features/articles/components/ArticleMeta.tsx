@@ -1,5 +1,6 @@
 import UserAvatar from "@/components/shared/UserAvatar";
 import { CardDescription, CardTitle } from "@/components/ui/card";
+import { Link } from "@tanstack/react-router";
 
 type ArticleMetaProps = {
   username: string;
@@ -9,7 +10,11 @@ type ArticleMetaProps = {
 
 function ArticleMeta({ username, image, createdAt }: ArticleMetaProps) {
   return (
-    <div className="flex gap-3 items-center">
+    <Link
+      to="/profile/$username"
+      params={{ username }}
+      className="flex gap-3 items-center cursor-pointer"
+    >
       <UserAvatar username={username} image={image} />
       <div>
         <CardTitle>{username}</CardTitle>
@@ -17,7 +22,7 @@ function ArticleMeta({ username, image, createdAt }: ArticleMetaProps) {
           {createdAt.trim().split("T")[0]}
         </CardDescription>
       </div>
-    </div>
+    </Link>
   );
 }
 

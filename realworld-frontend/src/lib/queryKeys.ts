@@ -16,4 +16,8 @@ export const queryKeys = {
   comments: {
     byArticle: (slug: string) => ["comments", slug] as const,
   },
+
+  profile: {
+    detail: (username: string) => ["profile", username] as const,
+  },
 };
