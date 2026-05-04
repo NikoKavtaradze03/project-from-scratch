@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { queryKeys } from "@/lib/queryKeys";
 import { followProfile, unfollowProfile } from "../api/profileApi";
 import { UserPlus, UserMinus } from "lucide-react";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 
 type FollowButtonProps = {
   username: string;
@@ -12,6 +13,8 @@ type FollowButtonProps = {
 function FollowButton({ username, following }: FollowButtonProps) {
   const queryClient = useQueryClient();
   const Icon = following ? UserMinus : UserPlus;
+  const { data: currentUserResponse } = useCurrentUser();
+  const currentUser = currentUserResponse?.user;
 
   const followMutation = useMutation({
     mutationFn: () =>
@@ -25,7 +28,8 @@ function FollowButton({ username, following }: FollowButtonProps) {
   });
 
   return (
-    <Button
+currentUser?.username !== username && (
+   <Button
       type="button"
       variant="outline"
       disabled={followMutation.isPending}
@@ -39,6 +43,9 @@ function FollowButton({ username, following }: FollowButtonProps) {
         </>
       }
     </Button>
+)
+
+   
   );
 }
 
