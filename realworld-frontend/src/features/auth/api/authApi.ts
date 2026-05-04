@@ -5,7 +5,7 @@ type LoginCredentials = {
   password: string;
 };
 
-export type AuthUser = {
+export type User = {
   email: string;
   token: string;
   username: string;
@@ -14,7 +14,7 @@ export type AuthUser = {
 };
 
 type AuthResponse = {
-  user: AuthUser;
+  user: User;
 };
 
 export function loginUser(credentials: LoginCredentials) {
@@ -43,4 +43,25 @@ export function registerUser(credentials: RegisterCredentials) {
 
 export function getCurrentUser() {
   return apiFetch<AuthResponse>("/user");
+}
+
+type UpdateUserInput = {
+  email?: string;
+  username?: string;
+  password?: string;
+  bio?: string;
+  image?: string;
+};
+
+type UpdateUserResponse = {
+  user: User;
+};
+
+export function updateUser(input: UpdateUserInput) {
+  return apiFetch<UpdateUserResponse>("/user", {
+    method: "PUT",
+    body: JSON.stringify({
+      user: input,
+    }),
+  });
 }
