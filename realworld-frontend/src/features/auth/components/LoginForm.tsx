@@ -26,7 +26,6 @@ function LoginForm() {
 
       setToken(response.user.token);
       queryClient.setQueryData(queryKeys.auth.currentUser, response);
-      queryClient.invalidateQueries({ queryKey: queryKeys.auth.currentUser });
       navigate({ to: "/" });
     },
   });
