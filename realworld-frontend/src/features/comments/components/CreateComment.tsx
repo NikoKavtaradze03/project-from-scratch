@@ -14,12 +14,12 @@ type CreateCommentProps = {
 function CreateComment({ slug }: CreateCommentProps) {
   const [commentBody, setCommentBody] = useState("");
   const queryClient = useQueryClient();
-  const { data: currentUserResponse } = useCurrentUser();
 
+  const { data: currentUserResponse } = useCurrentUser();
   const currentUser = currentUserResponse?.user;
 
   const createCommentMutation = useMutation({
-    mutationFn: () => createComment(slug, commentBody),
+    mutationFn: (body: string) => createComment(slug, body),
     onSuccess: async () => {
       setCommentBody("");
 
@@ -29,21 +29,19 @@ function CreateComment({ slug }: CreateCommentProps) {
     },
   });
 
+  function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const trimmedBody = commentBody.trim();
+    if (!trimmedBody) return;
+
+    createCommentMutation.mutate(trimmedBody);
+  }
+
   return (
     <div>
       {currentUser ? (
-        <form
-          className="space-y-3"
-          onSubmit={(event) => {
-            event.preventDefault();
-
-            if (!commentBody.trim()) {
-              return;
-            }
-
-            createCommentMutation.mutate();
-          }}
-        >
+        <form className="space-y-3" onSubmit={handleSubmit}>
           <Textarea
             value={commentBody}
             onChange={(event) => setCommentBody(event.target.value)}
