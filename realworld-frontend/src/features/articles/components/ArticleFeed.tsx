@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getArticles, getFeedArticles } from "../api/articlesApi";
 import { useState } from "react";
 import Pagination from "@/components/shared/pagination";
+import ArticleFeedSkeleton from "./ArticleFeedSkeleton";
 
 type ArticleFeedProps = {
   author?: string;
@@ -52,29 +53,34 @@ export default function ArticleFeed({
     },
   });
 
+  if (isLoading) {
+    return <ArticleFeedSkeleton count={ARTICLES_PER_PAGE} />;
+  }
+
+  if (isError) {
+    return (
+      <p className="text-sm text-(--color-danger)">Failed to load articles.</p>
+    );
+  }
+
+  const articles = articlesResponse?.articles ?? [];
+
   const totalPages = articlesResponse
     ? Math.ceil(articlesResponse.articlesCount / ARTICLES_PER_PAGE)
     : 0;
 
   return (
     <div className="flex flex-col gap-6">
-      {isLoading ? (
-        <p className="text-sm text-(--color-text-muted)">Loading articles...</p>
-      ) : isError ? (
-        <p className="text-sm text-(--color-danger)">
-          Failed to load articles.
-        </p>
-      ) : (
-        articlesResponse?.articles.map((article) => (
-          <ArticlePreviewCard key={article.slug} article={article} />
-        ))
+      {articles.map((article) => (
+        <ArticlePreviewCard article={article} key={article.slug} />
+      ))}
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
+        />
       )}
-
-      <Pagination
-        currentPage={page}
-        totalPages={totalPages}
-        onPageChange={setPage}
-      />
     </div>
   );
 }
