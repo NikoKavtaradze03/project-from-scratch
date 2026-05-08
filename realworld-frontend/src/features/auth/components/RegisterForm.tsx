@@ -6,8 +6,13 @@ import { setToken } from "@/lib/auth";
 import { registerUser } from "../api/authApi";
 import AuthField from "./AuthField";
 import { queryKeys } from "@/lib/queryKeys";
+import { registerSchema } from "../utils/authSchema";
 
 function RegisterForm() {
+  const emailSchema = registerSchema.shape.email;
+  const passwordSchema = registerSchema.shape.password;
+  const usernameSchema = registerSchema.shape.username;
+
   const queryClient = useQueryClient();
   const registerMutation = useMutation({
     mutationFn: registerUser,
@@ -37,7 +42,22 @@ function RegisterForm() {
         form.handleSubmit();
       }}
     >
-      <form.Field name="username">
+      <form.Field
+        name="username"
+        validators={{
+          onBlur: ({ value }) => {
+            const result = usernameSchema.safeParse(value);
+
+            return result.success ? undefined : result.error.issues[0]?.message;
+          },
+          onChange: ({ value, fieldApi }) => {
+            if (!fieldApi.state.meta.isBlurred) return undefined;
+
+            const result = usernameSchema.safeParse(value);
+            return result.success ? undefined : result.error.issues[0]?.message;
+          },
+        }}
+      >
         {(field) => (
           <AuthField
             id={field.name}
@@ -45,33 +65,69 @@ function RegisterForm() {
             type="text"
             value={field.state.value}
             onChange={(value) => field.handleChange(value)}
+            onBlur={field.handleBlur}
             placeholder="your username"
+            error={field.state.meta.errors[0]}
           />
         )}
       </form.Field>
 
-      <form.Field name="email">
+      <form.Field
+        name="email"
+        validators={{
+          onBlur: ({ value }) => {
+            const result = emailSchema.safeParse(value);
+
+            return result.success ? undefined : result.error.issues[0]?.message;
+          },
+          onChange: ({ value, fieldApi }) => {
+            if (!fieldApi.state.meta.isBlurred) return undefined;
+
+            const result = emailSchema.safeParse(value);
+            return result.success ? undefined : result.error.issues[0]?.message;
+          },
+        }}
+      >
         {(field) => (
           <AuthField
             id={field.name}
             label="Email"
             type="email"
             value={field.state.value}
+            onBlur={field.handleBlur}
             onChange={(value) => field.handleChange(value)}
             placeholder="you@example.com"
+            error={field.state.meta.errors[0]}
           />
         )}
       </form.Field>
 
-      <form.Field name="password">
+      <form.Field
+        name="password"
+        validators={{
+          onBlur: ({ value }) => {
+            const result = passwordSchema.safeParse(value);
+
+            return result.success ? undefined : result.error.issues[0]?.message;
+          },
+          onChange: ({ value, fieldApi }) => {
+            if (!fieldApi.state.meta.isBlurred) return undefined;
+
+            const result = passwordSchema.safeParse(value);
+            return result.success ? undefined : result.error.issues[0]?.message;
+          },
+        }}
+      >
         {(field) => (
           <AuthField
             id={field.name}
             label="Password"
             type="password"
             value={field.state.value}
+            onBlur={field.handleBlur}
             onChange={(value) => field.handleChange(value)}
             placeholder="********"
+            error={field.state.meta.errors[0]}
           />
         )}
       </form.Field>
@@ -82,13 +138,19 @@ function RegisterForm() {
         </p>
       ) : null}
 
-      <Button
-        type="submit"
-        disabled={registerMutation.isPending}
-        className="w-full bg-(--color-accent) py-5 font-bold transition-colors hover:bg-(--color-accent-hover)"
+      <form.Subscribe
+        selector={(state) => [state.canSubmit, state.isSubmitting]}
       >
-        {registerMutation.isPending ? "Signing up..." : "Sign up"}
-      </Button>
+        {([canSubmit, isSubmitting]) => (
+          <Button
+            type="submit"
+            disabled={!canSubmit || isSubmitting || registerMutation.isPending}
+            className="w-full bg-(--color-accent) py-5 font-bold transition-colors hover:bg-(--color-accent-hover)"
+          >
+            {registerMutation.isPending ? "Signing in..." : "Sign in"}
+          </Button>
+        )}
+      </form.Subscribe>
     </form>
   );
 }

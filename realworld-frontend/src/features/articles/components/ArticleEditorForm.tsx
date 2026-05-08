@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { articleSchema } from "../utils/articleEditorSchema";
+import getZodError from "../utils/getZodError";
 
 export type ArticleEditorFormValues = {
   title: string;
@@ -25,7 +27,14 @@ function ArticleEditorForm({
   submitLabel = "Publish Article",
   onSubmit,
 }: ArticleEditorFormProps) {
+  const titleSchema = articleSchema.shape.title;
+  const descriptionSchema = articleSchema.shape.description;
+  const bodySchema = articleSchema.shape.body;
+  const tagSchema = articleSchema.shape.tagList.element;
+
   const [tagInput, setTagInput] = useState("");
+  const [tagError, setTagError] = useState("");
+
   const form = useForm({
     defaultValues: {
       title: initialValues?.title || "",
@@ -46,45 +55,111 @@ function ArticleEditorForm({
         form.handleSubmit();
       }}
     >
-      <form.Field name="title">
+      <form.Field
+        name="title"
+        validators={{
+          onBlur: ({ value }) => {
+            const result = titleSchema.safeParse(value);
+
+            return result.success ? undefined : result.error.issues[0]?.message;
+          },
+
+          onChange: ({ value, fieldApi }) => {
+            if (!fieldApi.state.meta.isBlurred) return undefined;
+
+            getZodError(titleSchema, value);
+          },
+        }}
+      >
         {(field) => (
           <div className="space-y-2">
             <Label htmlFor={field.name}>Title</Label>
             <Input
               id={field.name}
               value={field.state.value}
+              onBlur={field.handleBlur}
               onChange={(event) => field.handleChange(event.target.value)}
               placeholder="Article title"
             />
+
+            {field.state.meta.errors[0] ? (
+              <p className="text-sm text-(--color-danger)">
+                {field.state.meta.errors[0]}
+              </p>
+            ) : null}
           </div>
         )}
       </form.Field>
 
-      <form.Field name="description">
+      <form.Field
+        name="description"
+        validators={{
+          onBlur: ({ value }) => {
+            const result = descriptionSchema.safeParse(value);
+
+            return result.success ? undefined : result.error.issues[0]?.message;
+          },
+
+          onChange: ({ value, fieldApi }) => {
+            if (!fieldApi.state.meta.isBlurred) return undefined;
+
+            return getZodError(descriptionSchema, value);
+          },
+        }}
+      >
         {(field) => (
           <div className="space-y-2">
             <Label htmlFor={field.name}>Description</Label>
             <Input
               id={field.name}
               value={field.state.value}
+              onBlur={field.handleBlur}
               onChange={(event) => field.handleChange(event.target.value)}
               placeholder="Article Description"
             />
+
+            {field.state.meta.errors[0] ? (
+              <p className="text-sm text-(--color-danger)">
+                {field.state.meta.errors[0]}
+              </p>
+            ) : null}
           </div>
         )}
       </form.Field>
 
-      <form.Field name="body">
+      <form.Field
+        name="body"
+        validators={{
+          onBlur: ({ value }) => {
+            const result = bodySchema.safeParse(value);
+
+            return result.success ? undefined : result.error.issues[0]?.message;
+          },
+
+          onChange: ({ value, fieldApi }) => {
+            if (!fieldApi.state.meta.isBlurred) return undefined;
+
+            getZodError(bodySchema, value);
+          },
+        }}
+      >
         {(field) => (
           <div className="space-y-2">
             <Label htmlFor={field.name}>Body</Label>
             <Textarea
               id={field.name}
               value={field.state.value}
+              onBlur={field.handleBlur}
               onChange={(event) => field.handleChange(event.target.value)}
               placeholder="Write your article..."
               className="min-h-64"
             />
+
+            {field.state.meta.errors[0] ? (
+              <p className="text-sm text-(--color-danger)">
+                {field.state.meta.errors[0]}
+              </p>
+            ) : null}
           </div>
         )}
       </form.Field>
@@ -92,21 +167,32 @@ function ArticleEditorForm({
       <form.Field name="tagList">
         {(field) => {
           function addTag() {
-            const tag = tagInput.trim();
+            const result = tagSchema.safeParse(tagInput);
 
-            if (!tag) {
+            if (!result.success) {
+              setTagError(result.error.issues[0]?.message ?? "Invalid tag");
+
               return;
             }
 
-            if (!field.state.value.includes(tag)) {
-              field.handleChange([...field.state.value, tag]);
+            const validatedTag = result.data;
+
+            if (field.state.value.includes(validatedTag)) {
+              setTagError("Tag already exists");
+
+              return;
             }
 
+            field.handleChange([...field.state.value, validatedTag]);
+
+            setTagError("");
             setTagInput("");
           }
 
           function removeTag(tag: string) {
-            field.handleChange(field.state.value.filter((item) => item !== tag));
+            field.handleChange(
+              field.state.value.filter((item) => item !== tag),
+            );
           }
 
           return (
@@ -115,7 +201,14 @@ function ArticleEditorForm({
               <Input
                 id={field.name}
                 value={tagInput}
-                onChange={(event) => setTagInput(event.target.value)}
+                onBlur={field.handleBlur}
+                onChange={(event) => {
+                  setTagInput(event.target.value);
+
+                  if (tagError) {
+                    setTagError("");
+                  }
+                }}
                 onKeyDown={(event) => {
                   if (event.key === "Enter") {
                     event.preventDefault();
@@ -124,6 +217,10 @@ function ArticleEditorForm({
                 }}
                 placeholder="Add a tag and press Enter"
               />
+
+              {tagError ? (
+                <p className="text-sm text-(--color-danger)">{tagError}</p>
+              ) : null}
 
               {field.state.value.length > 0 ? (
                 <div className="flex flex-wrap gap-2 pt-1">

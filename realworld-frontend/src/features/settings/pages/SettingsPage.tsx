@@ -87,7 +87,7 @@ function SettingsPage() {
 
         <SettingsForm
           initialValues={initialValues}
-          isSubmitting={updateUserMutation.isPending}
+          isPending={updateUserMutation.isPending}
           onSubmit={handleSubmit}
         />
 

@@ -5,10 +5,13 @@ import { Button } from "@/components/ui/button";
 import { setToken } from "@/lib/auth";
 import { loginUser } from "../api/authApi";
 import AuthField from "./AuthField";
-
+import { loginSchema } from "../utils/authSchema";
 import { queryKeys } from "@/lib/queryKeys";
 
 function LoginForm() {
+  const emailSchema = loginSchema.shape.email;
+  const passwordSchema = loginSchema.shape.password;
+
   const queryClient = useQueryClient();
 
   const loginMutation = useMutation({
@@ -22,7 +25,13 @@ function LoginForm() {
       password: "",
     },
     onSubmit: async ({ value }) => {
-      const response = await loginMutation.mutateAsync(value);
+      const result = loginSchema.safeParse(value);
+
+      if (!result.success) {
+        return;
+      }
+
+      const response = await loginMutation.mutateAsync(result.data);
 
       setToken(response.user.token);
       queryClient.setQueryData(queryKeys.auth.currentUser, response);
@@ -38,7 +47,22 @@ function LoginForm() {
         form.handleSubmit();
       }}
     >
-      <form.Field name="email">
+      <form.Field
+        name="email"
+        validators={{
+          onBlur: ({ value }) => {
+            const result = emailSchema.safeParse(value);
+
+            return result.success ? undefined : result.error.issues[0]?.message;
+          },
+          onChange: ({ value, fieldApi }) => {
+            if (!fieldApi.state.meta.isBlurred) return undefined;
+
+            const result = emailSchema.safeParse(value);
+            return result.success ? undefined : result.error.issues[0]?.message;
+          },
+        }}
+      >
         {(field) => (
           <AuthField
             id={field.name}
@@ -46,12 +70,29 @@ function LoginForm() {
             type="email"
             value={field.state.value}
             onChange={(value) => field.handleChange(value)}
+            onBlur={field.handleBlur}
             placeholder="you@example.com"
+            error={field.state.meta.errors[0]}
           />
         )}
       </form.Field>
 
-      <form.Field name="password">
+      <form.Field
+        name="password"
+        validators={{
+          onBlur: ({ value }) => {
+            const result = passwordSchema.safeParse(value);
+
+            return result.success ? undefined : result.error.issues[0]?.message;
+          },
+          onChange: ({ value, fieldApi }) => {
+            if (!fieldApi.state.meta.isBlurred) return undefined;
+
+            const result = passwordSchema.safeParse(value);
+            return result.success ? undefined : result.error.issues[0]?.message;
+          },
+        }}
+      >
         {(field) => (
           <AuthField
             id={field.name}
@@ -59,7 +100,9 @@ function LoginForm() {
             type="password"
             value={field.state.value}
             onChange={(value) => field.handleChange(value)}
+            onBlur={field.handleBlur}
             placeholder="********"
+            error={field.state.meta.errors[0]}
           />
         )}
       </form.Field>
@@ -70,13 +113,19 @@ function LoginForm() {
         </p>
       ) : null}
 
-      <Button
-        type="submit"
-        disabled={loginMutation.isPending}
-        className="w-full bg-(--color-accent) py-5 font-bold transition-colors hover:bg-(--color-accent-hover)"
+      <form.Subscribe
+        selector={(state) => [state.canSubmit, state.isSubmitting]}
       >
-        {loginMutation.isPending ? "Signing in..." : "Sign in"}
-      </Button>
+        {([canSubmit, isSubmitting]) => (
+          <Button
+            type="submit"
+            disabled={!canSubmit || isSubmitting || loginMutation.isPending}
+            className="w-full bg-(--color-accent) py-5 font-bold transition-colors hover:bg-(--color-accent-hover)"
+          >
+            {loginMutation.isPending ? "Signing in..." : "Sign in"}
+          </Button>
+        )}
+      </form.Subscribe>
     </form>
   );
 }

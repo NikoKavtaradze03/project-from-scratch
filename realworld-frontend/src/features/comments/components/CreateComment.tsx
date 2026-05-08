@@ -6,12 +6,15 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Link } from "@tanstack/react-router";
 import { queryKeys } from "@/lib/queryKeys";
+import { commentSchema } from "../utils/commentSchema";
 
 type CreateCommentProps = {
   slug: string;
 };
 
 function CreateComment({ slug }: CreateCommentProps) {
+  const bodySchema = commentSchema.shape.body;
+  const [error, setError] = useState("");
   const [commentBody, setCommentBody] = useState("");
   const queryClient = useQueryClient();
 
@@ -32,10 +35,14 @@ function CreateComment({ slug }: CreateCommentProps) {
   function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const trimmedBody = commentBody.trim();
-    if (!trimmedBody) return;
+    const result = bodySchema.safeParse(commentBody);
 
-    createCommentMutation.mutate(trimmedBody);
+    if (!result.success) {
+      setError(result.error.issues[0]?.message ?? "Invalid Comment");
+      return;
+    }
+
+    createCommentMutation.mutate(result.data);
   }
 
   return (
@@ -44,14 +51,28 @@ function CreateComment({ slug }: CreateCommentProps) {
         <form className="space-y-3" onSubmit={handleSubmit}>
           <Textarea
             value={commentBody}
-            onChange={(event) => setCommentBody(event.target.value)}
+            onChange={(event) => {
+              setCommentBody(event.target.value);
+
+              if (error) {
+                const result = bodySchema.safeParse(event.target.value);
+
+                if (result.success) {
+                  setError("");
+                }
+              }
+            }}
             placeholder="Write a comment..."
             className="min-h-28"
           />
 
+          {error ? (
+            <p className="text-sm text-(--color-danger)">{error}</p>
+          ) : null}
+
           <Button
             type="submit"
-            disabled={createCommentMutation.isPending}
+            disabled={createCommentMutation.isPending || !commentBody.trim()}
             className="bg-(--color-accent) font-bold text-(--color-text) hover:bg-(--color-accent-hover) py-4 cursor-pointer"
           >
             {createCommentMutation.isPending ? "Posting..." : "Post Comment"}
