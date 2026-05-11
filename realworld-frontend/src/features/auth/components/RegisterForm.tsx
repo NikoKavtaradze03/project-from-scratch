@@ -7,6 +7,7 @@ import { registerUser } from "../api/authApi";
 import AuthField from "./AuthField";
 import { queryKeys } from "@/lib/queryKeys";
 import { registerSchema } from "../utils/authSchema";
+import { ApiError } from "@/lib/errors";
 
 function RegisterForm() {
   const emailSchema = registerSchema.shape.email;
@@ -134,7 +135,9 @@ function RegisterForm() {
 
       {registerMutation.isError ? (
         <p className="text-sm text-(--color-danger)">
-          Registration failed. Please try again.
+          {registerMutation.error instanceof ApiError
+            ? registerMutation.error.message
+            : "Something went wrong. Please try again."}
         </p>
       ) : null}
 

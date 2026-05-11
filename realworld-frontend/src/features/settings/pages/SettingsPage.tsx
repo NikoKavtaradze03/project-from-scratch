@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 
 import { queryKeys } from "@/lib/queryKeys";
 import { removeToken, setToken } from "@/lib/auth";
+import { ApiError } from "@/lib/errors";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { updateUser } from "@/features/auth/api/authApi";
 
@@ -93,7 +94,9 @@ function SettingsPage() {
 
         {updateUserMutation.isError ? (
           <p className="mt-4 text-sm text-(--color-danger)">
-            Failed to update settings.
+            {updateUserMutation.error instanceof ApiError
+              ? updateUserMutation.error.message
+              : "Something went wrong. Please try again."}
           </p>
         ) : null}
 

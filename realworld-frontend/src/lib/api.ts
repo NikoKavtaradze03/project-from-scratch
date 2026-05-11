@@ -1,4 +1,6 @@
 import { getToken } from "./auth";
+import { ApiError } from "./errors";
+import { removeToken } from "./auth";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -22,23 +24,40 @@ export async function apiFetch<T>(
   const contentType = response.headers.get("content-type");
 
   if (!response.ok) {
-    if (responseText && contentType?.includes("application/json")) {
-      const errorBody = JSON.parse(responseText) as {
-        message?: string | string[];
-        error?: string;
-      };
-      const message = Array.isArray(errorBody.message)
-        ? errorBody.message.join(", ")
-        : errorBody.message;
+    let errorBody: unknown;
 
-      throw new Error(message ?? errorBody.error ?? `Request failed: ${response.status}`);
+    try {
+      errorBody = JSON.parse(responseText);
+    } catch {
+      errorBody = responseText;
     }
 
-    throw new Error(responseText || `Request failed: ${response.status}`);
+    let message = `Request failed: ${response.status}`;
+
+    if (errorBody && typeof errorBody === "object" && "errors" in errorBody) {
+      const errors = errorBody.errors;
+
+      if (errors && typeof errors === "object") {
+        const firstError = Object.values(errors)[0];
+
+        if (Array.isArray(firstError)) {
+          message = firstError[0];
+        }
+      }
+    }
+
+    if (response.status === 401) {
+      removeToken();
+    }
+
+    throw new ApiError(response.status, message, errorBody);
   }
 
   if (!responseText) {
-    return undefined as T;
+    throw new ApiError(
+      response.status,
+      "Expected response body but received none",
+    );
   }
 
   if (!contentType?.includes("application/json")) {
@@ -46,4 +65,11 @@ export async function apiFetch<T>(
   }
 
   return JSON.parse(responseText) as T;
+}
+
+export async function apiFetchVoid(
+  path: string,
+  options: RequestInit = {},
+): Promise<void> {
+  await apiFetch<unknown>(path, options);
 }
