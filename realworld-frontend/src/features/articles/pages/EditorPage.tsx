@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import PageContainer from "@/components/layout/PageContainer";
@@ -32,13 +32,14 @@ function parseArticleTags(tagList: string[]) {
   return tagList.map((tag) => tag.trim()).filter((tag) => tag.length > 0);
 }
 
-function EditorPage() {
+type EditorPageProps = { mode: "create" } | { mode: "edit"; slug: string };
+
+function EditorPage(props: EditorPageProps) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const params = useParams({ strict: false });
-  const slug = params.slug;
-  const isEditMode = Boolean(slug);
+  const isEditMode = props.mode === "edit";
+  const slug = props.mode === "edit" ? props.slug : undefined;
 
   const { data: currentUserResponse, isLoading: isCurrentUserLoading } =
     useCurrentUser();

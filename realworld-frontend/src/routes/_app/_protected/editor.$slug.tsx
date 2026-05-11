@@ -5,5 +5,8 @@ import EditorPage from "@/features/articles/pages/EditorPage";
 export const Route = createRoute({
   getParentRoute: () => protectedRoute,
   path: "/editor/$slug",
-  component: EditorPage,
+  component: function EditorEdit() {
+    const { slug } = Route.useParams();
+    return <EditorPage mode="edit" slug={slug} />;
+  },
 });
