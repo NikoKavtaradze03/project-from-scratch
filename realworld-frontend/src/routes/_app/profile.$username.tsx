@@ -1,9 +1,9 @@
 import { createRoute } from "@tanstack/react-router";
-import { Route as rootRoute } from "./__root";
+import { Route as appRoute } from "../_app";
 import ProfilePage from "@/features/profile/pages/ProfilePage";
 
 export const Route = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => appRoute,
   path: "/profile/$username",
   component: ProfilePage,
 });
