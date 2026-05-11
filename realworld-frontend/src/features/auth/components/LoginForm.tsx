@@ -8,10 +8,13 @@ import AuthField from "./AuthField";
 import { loginSchema } from "../utils/authSchema";
 import { queryKeys } from "@/lib/queryKeys";
 import { ApiError } from "@/lib/errors";
+import { Route } from "@/routes/login";
 
 function LoginForm() {
   const emailSchema = loginSchema.shape.email;
   const passwordSchema = loginSchema.shape.password;
+  const search = Route.useSearch();
+  const redirectTo = search.redirect ?? "/";
 
   const queryClient = useQueryClient();
 
@@ -36,7 +39,7 @@ function LoginForm() {
 
       setToken(response.user.token);
       queryClient.setQueryData(queryKeys.auth.currentUser, response);
-      navigate({ to: "/" });
+      navigate({ to: redirectTo });
     },
   });
 
