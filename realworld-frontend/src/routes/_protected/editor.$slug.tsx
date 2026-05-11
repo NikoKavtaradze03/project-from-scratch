@@ -1,9 +1,9 @@
 import { createRoute } from "@tanstack/react-router";
-import { Route as rootRoute } from "./__root";
+import { Route as protectedRoute } from "../_protected";
 import EditorPage from "@/features/articles/pages/EditorPage";
 
 export const Route = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => protectedRoute,
   path: "/editor/$slug",
   component: EditorPage,
 });

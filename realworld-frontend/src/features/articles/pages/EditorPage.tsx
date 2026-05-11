@@ -1,4 +1,4 @@
-import { Navigate, useNavigate, useParams } from "@tanstack/react-router";
+import { useNavigate, useParams } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import PageContainer from "@/components/layout/PageContainer";
@@ -92,7 +92,7 @@ function EditorPage() {
   }
 
   if (!currentUserResponse?.user) {
-    return <Navigate to="/login" />;
+    return null;
   }
 
   if (isEditMode && isArticleLoading) {

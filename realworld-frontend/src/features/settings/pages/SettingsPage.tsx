@@ -1,4 +1,4 @@
-import { Navigate, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import PageContainer from "@/components/layout/PageContainer";
@@ -67,7 +67,7 @@ function SettingsPage() {
   }
 
   if (!currentUser) {
-    return <Navigate to="/login" />;
+    return null;
   }
 
   const initialValues: SettingsFormValues = {
