@@ -1,21 +1,7 @@
-import { Outlet, useRouterState } from "@tanstack/react-router";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import { Outlet } from "@tanstack/react-router";
 
 function RootLayout() {
-  const pathname = useRouterState({
-    select: (state) => state.location.pathname,
-  });
-
-  const hideElement = pathname === "/login" || pathname === "/register";
-
-  return (
-    <>
-      {!hideElement ? <Header /> : null}
-      <Outlet />
-      {!hideElement ? <Footer /> : null}
-    </>
-  );
+  return <Outlet />;
 }
 
 export default RootLayout;

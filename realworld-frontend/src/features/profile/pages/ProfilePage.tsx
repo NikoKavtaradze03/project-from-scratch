@@ -8,7 +8,7 @@ import { ProfileTabs } from "../components/ProfileTabs";
 import { ProfileHeader } from "../components/ProfileHeader";
 
 function ProfilePage() {
-  const { username } = useParams({ from: "/profile/$username" });
+  const { username } = useParams({ from: "/_app/profile/$username" });
 
   const {
     data: profileResponse,

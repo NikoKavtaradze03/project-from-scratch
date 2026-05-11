@@ -4,7 +4,7 @@ const optionalUrl = z
   .string()
   .trim()
   .refine(
-    (value) => {
+    (value: string) => {
       if (!value) return true;
 
       try {
@@ -33,7 +33,7 @@ export const settingsSchema = z.object({
   password: z
     .string()
     .refine(
-      (value) => value === "" || value.length >= 8,
+      (value: string) => value === "" || value.length >= 8,
       "Password must be at least 8 characters",
     ),
 });

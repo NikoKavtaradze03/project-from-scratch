@@ -22,7 +22,7 @@ function ArticlePageMessage({ children }: { children: ReactNode }) {
 }
 
 function ArticlePage() {
-  const { slug } = useParams({ from: "/article/$slug" });
+  const { slug } = useParams({ from: "/_app/article/$slug" });
 
   const {
     data: articleResponse,
