@@ -1,19 +1,10 @@
-import { Outlet, createRoute, redirect } from "@tanstack/react-router";
+import { Outlet, createRoute } from "@tanstack/react-router";
 import { Route as appRoute } from "../_app";
-import { getToken } from "@/lib/auth";
+import { requireAuth } from "@/lib/requireAuth";
 
 export const Route = createRoute({
   getParentRoute: () => appRoute,
   id: "_protected",
-  beforeLoad: ({ location }) => {
-    if (!getToken()) {
-      throw redirect({
-        to: "/login",
-        search: {
-          redirect: location.href,
-        },
-      });
-    }
-  },
+  beforeLoad: ({ location }) => requireAuth(location),
   component: Outlet,
 });
