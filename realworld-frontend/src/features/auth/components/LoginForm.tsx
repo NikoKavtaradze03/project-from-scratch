@@ -7,6 +7,7 @@ import { loginUser } from "../api/authApi";
 import AuthField from "./AuthField";
 import { loginSchema } from "../utils/authSchema";
 import { queryKeys } from "@/lib/queryKeys";
+import { ApiError } from "@/lib/errors";
 
 function LoginForm() {
   const emailSchema = loginSchema.shape.email;
@@ -109,7 +110,9 @@ function LoginForm() {
 
       {loginMutation.isError ? (
         <p className="text-sm text-(--color-danger)">
-          Invalid email or password.
+          {loginMutation.error instanceof ApiError
+            ? loginMutation.error.message
+            : "Something went wrong. Please try again."}
         </p>
       ) : null}
 
