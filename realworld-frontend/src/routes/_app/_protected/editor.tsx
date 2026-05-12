@@ -5,5 +5,5 @@ import EditorPage from "@/features/articles/pages/EditorPage";
 export const Route = createRoute({
   getParentRoute: () => protectedRoute,
   path: "/editor",
-  component: EditorPage,
+  component: () => <EditorPage mode="create" />,
 });
