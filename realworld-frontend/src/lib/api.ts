@@ -1,6 +1,11 @@
 import { getToken, removeToken } from "./auth";
 import { ApiError } from "./errors";
 
+type RequestResult = {
+  status: number;
+  body: unknown;
+};
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function buildHeaders(options?: RequestInit): HeadersInit {
@@ -58,7 +63,10 @@ function handleErrorResponse(status: number, body: unknown): never {
   throw new ApiError(status, message, body);
 }
 
-async function request(path: string, options: RequestInit = {}) {
+async function request(
+  path: string,
+  options: RequestInit = {},
+): Promise<RequestResult> {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
     headers: buildHeaders(options),
