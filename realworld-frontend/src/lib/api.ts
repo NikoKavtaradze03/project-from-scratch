@@ -44,6 +44,20 @@ function parseResponseBody(responseText: string, contentType: string | null) {
   return JSON.parse(responseText);
 }
 
+function handleUnauthorized(status: number) {
+  if (status === 401) {
+    removeToken();
+  }
+}
+
+function handleErrorResponse(status: number, body: unknown): never {
+  const message = getErrorMessage(body, status);
+
+  handleUnauthorized(status);
+
+  throw new ApiError(status, message, body);
+}
+
 async function request(path: string, options: RequestInit = {}) {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
@@ -52,30 +66,23 @@ async function request(path: string, options: RequestInit = {}) {
 
   const responseText = await response.text();
   const contentType = response.headers.get("content-type");
-
   const body = parseResponseBody(responseText, contentType);
 
   if (!response.ok) {
-    const message = getErrorMessage(body, response.status);
-
-    if (response.status === 401) {
-      removeToken();
-    }
-
-    throw new ApiError(response.status, message, body);
+    handleErrorResponse(response.status, body);
   }
 
-  return body;
+  return { status: response.status, body };
 }
 
 export async function apiFetch<T>(
   path: string,
   options: RequestInit = {},
 ): Promise<T> {
-  const body = await request(path, options);
+  const { status, body } = await request(path, options);
 
   if (body === null) {
-    throw new ApiError(200, "Expected response body but received none");
+    throw new ApiError(status, "Expected response body but received none");
   }
 
   return body as T;
