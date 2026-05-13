@@ -1,4 +1,4 @@
-import { apiFetch } from "@/lib/api";
+import { apiFetch, apiFetchVoid } from "@/lib/api";
 
 export type Profile = {
   username: string;
@@ -16,13 +16,13 @@ export function getProfile(username: string) {
 }
 
 export function followProfile(username: string) {
-  return apiFetch<GetProfileResponse>(`/profiles/${username}/follow`, {
+  return apiFetchVoid(`/profiles/${username}/follow`, {
     method: "POST",
   });
 }
 
 export function unfollowProfile(username: string) {
-  return apiFetch<GetProfileResponse>(`/profiles/${username}/follow`, {
+  return apiFetchVoid(`/profiles/${username}/follow`, {
     method: "DELETE",
   });
 }

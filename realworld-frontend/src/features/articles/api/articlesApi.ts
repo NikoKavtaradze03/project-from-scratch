@@ -1,4 +1,4 @@
-import { apiFetch } from "@/lib/api";
+import { apiFetch, apiFetchVoid } from "@/lib/api";
 
 export type Article = {
   slug: string;
@@ -88,7 +88,7 @@ export function getArticle(slug: string) {
 }
 
 export function deleteArticle(slug: string) {
-  return apiFetch<void>(`/articles/${slug}`, {
+  return apiFetchVoid(`/articles/${slug}`, {
     method: "DELETE",
   });
 }
@@ -133,13 +133,13 @@ export function updateArticle(input: UpdateArticleInput) {
 }
 
 export function favoriteArticle(slug: string) {
-  return apiFetch<CreateArticleResponse>(`/articles/${slug}/favorite`, {
+  return apiFetchVoid(`/articles/${slug}/favorite`, {
     method: "POST",
   });
 }
 
 export function unfavoriteArticle(slug: string) {
-  return apiFetch<CreateArticleResponse>(`/articles/${slug}/favorite`, {
+  return apiFetchVoid(`/articles/${slug}/favorite`, {
     method: "DELETE",
   });
 }

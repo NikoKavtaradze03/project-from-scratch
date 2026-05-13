@@ -1,4 +1,4 @@
-import { apiFetch } from "@/lib/api";
+import { apiFetch, apiFetchVoid } from "@/lib/api";
 
 export type Comment = {
   id: number;
@@ -37,7 +37,7 @@ export function createComment(slug: string, body: string) {
 }
 
 export function deleteComment(slug: string, commentId: number) {
-  return apiFetch(`/articles/${slug}/comments/${commentId}`, {
+  return apiFetchVoid(`/articles/${slug}/comments/${commentId}`, {
     method: "DELETE",
   });
 }
