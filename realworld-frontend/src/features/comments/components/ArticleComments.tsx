@@ -3,6 +3,7 @@ import { queryKeys } from "@/lib/queryKeys";
 import { getComments } from "../api/commentsApi";
 import { CommentList } from "./CommentList";
 import CreateComment from "./CreateComment";
+import CommentsSkeleton from "./CommentsSkeleton";
 
 type ArticleCommentsProps = {
   slug: string;
@@ -19,9 +20,7 @@ function ArticleComments({ slug }: ArticleCommentsProps) {
   });
 
   if (isLoading) {
-    return (
-      <p className="text-sm text-(--color-text-muted)">Loading comments...</p>
-    );
+    return <CommentsSkeleton />;
   }
 
   if (isError) {
