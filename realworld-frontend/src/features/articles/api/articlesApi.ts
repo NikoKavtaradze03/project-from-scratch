@@ -1,4 +1,4 @@
-import { apiFetch, apiFetchVoid } from "@/lib/api";
+import { axiosFetch } from "@/lib/axios-api";
 import type {
   CreateArticleInput,
   CreateArticleResponse,
@@ -35,7 +35,7 @@ export function getArticles({
     params.set("tag", tag);
   }
 
-  return apiFetch<GetArticlesResponse>(`/articles?${params.toString()}`);
+  return axiosFetch<GetArticlesResponse>(`/articles?${params.toString()}`);
 }
 
 export function getFeedArticles({
@@ -49,21 +49,21 @@ export function getFeedArticles({
   params.set("limit", String(limit));
   params.set("offset", String(offset));
 
-  return apiFetch<GetArticlesResponse>(`/articles/feed?${params.toString()}`);
+  return axiosFetch<GetArticlesResponse>(`/articles/feed?${params.toString()}`);
 }
 
 export function getArticle(slug: string) {
-  return apiFetch<GetArticleResponse>(`/articles/${slug}`);
+  return axiosFetch<GetArticleResponse>(`/articles/${slug}`);
 }
 
 export function deleteArticle(slug: string) {
-  return apiFetchVoid(`/articles/${slug}`, {
+  return axiosFetch(`/articles/${slug}`, {
     method: "DELETE",
   });
 }
 
 export function createArticle(input: CreateArticleInput) {
-  return apiFetch<CreateArticleResponse>("/articles", {
+  return axiosFetch<CreateArticleResponse>("/articles", {
     method: "POST",
     body: JSON.stringify({
       article: input,
@@ -74,7 +74,7 @@ export function createArticle(input: CreateArticleInput) {
 export function updateArticle(input: UpdateArticleInput) {
   const { slug, ...article } = input;
 
-  return apiFetch<CreateArticleResponse>(`/articles/${slug}`, {
+  return axiosFetch<CreateArticleResponse>(`/articles/${slug}`, {
     method: "PUT",
     body: JSON.stringify({
       article,
@@ -83,13 +83,13 @@ export function updateArticle(input: UpdateArticleInput) {
 }
 
 export function favoriteArticle(slug: string) {
-  return apiFetchVoid(`/articles/${slug}/favorite`, {
+  return axiosFetch(`/articles/${slug}/favorite`, {
     method: "POST",
   });
 }
 
 export function unfavoriteArticle(slug: string) {
-  return apiFetchVoid(`/articles/${slug}/favorite`, {
+  return axiosFetch(`/articles/${slug}/favorite`, {
     method: "DELETE",
   });
 }

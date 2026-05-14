@@ -50,3 +50,23 @@ api.interceptors.response.use(
     return Promise.reject(new ApiError(status, message, data));
   },
 );
+
+type AxiosRequestOptions = {
+  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+  body?: unknown;
+  params?: Record<string, string | number | boolean>;
+};
+
+export async function axiosFetch<T>(
+  path: string,
+  options: AxiosRequestOptions = {},
+): Promise<T> {
+  const response = await api.request<T>({
+    url: path,
+    method: options.method ?? "GET",
+    data: options.body,
+    params: options.params,
+  });
+
+  return response.data;
+}
