@@ -1,35 +1,13 @@
 import { apiFetch } from "@/lib/api";
-
-export type Article = {
-  slug: string;
-  title: string;
-  description: string;
-  body: string;
-  tagList: string[];
-  createdAt: string;
-  updatedAt: string;
-  favorited: boolean;
-  favoritesCount: number;
-  author: {
-    username: string;
-    bio: string | null;
-    image: string | null;
-    following: boolean;
-  };
-};
-
-type GetArticlesResponse = {
-  articles: Article[];
-  articlesCount: number;
-};
-
-type GetArticlesParams = {
-  page?: number;
-  limit?: number;
-  author?: string;
-  favorited?: string;
-  tag?: string;
-};
+import type {
+  CreateArticleInput,
+  CreateArticleResponse,
+  GetArticleResponse,
+  GetArticlesParams,
+  GetArticlesResponse,
+  GetFeedArticlesParams,
+  UpdateArticleInput,
+} from "../types/articlesTypes";
 
 export function getArticles({
   page = 1,
@@ -60,11 +38,6 @@ export function getArticles({
   return apiFetch<GetArticlesResponse>(`/articles?${params.toString()}`);
 }
 
-type GetFeedArticlesParams = {
-  page?: number;
-  limit?: number;
-};
-
 export function getFeedArticles({
   page = 1,
   limit = 10,
@@ -79,10 +52,6 @@ export function getFeedArticles({
   return apiFetch<GetArticlesResponse>(`/articles/feed?${params.toString()}`);
 }
 
-type GetArticleResponse = {
-  article: Article;
-};
-
 export function getArticle(slug: string) {
   return apiFetch<GetArticleResponse>(`/articles/${slug}`);
 }
@@ -93,17 +62,6 @@ export function deleteArticle(slug: string) {
   });
 }
 
-type CreateArticleInput = {
-  title: string;
-  description: string;
-  body: string;
-  tagList: string[];
-};
-
-type CreateArticleResponse = {
-  article: Article;
-};
-
 export function createArticle(input: CreateArticleInput) {
   return apiFetch<CreateArticleResponse>("/articles", {
     method: "POST",
@@ -112,14 +70,6 @@ export function createArticle(input: CreateArticleInput) {
     }),
   });
 }
-
-type UpdateArticleInput = {
-  slug: string;
-  title: string;
-  description: string;
-  body: string;
-  tagList: string[];
-};
 
 export function updateArticle(input: UpdateArticleInput) {
   const { slug, ...article } = input;

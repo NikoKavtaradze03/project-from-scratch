@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardFooter, CardAction } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import type { Article } from "../api/articlesApi";
+import type { Article } from "../types/articlesTypes";
 import { Link } from "@tanstack/react-router";
 
 import TagList from "@/features/tags/components/TagList";
