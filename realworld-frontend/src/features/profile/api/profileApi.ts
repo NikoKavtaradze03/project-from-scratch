@@ -10,6 +10,8 @@ export type Profile = {
 type GetProfileResponse = {
   profile: Profile;
 };
+import { apiFetch } from "@/lib/api";
+import type { GetProfileResponse } from "../types/profileTypes";
 
 export function getProfile(username: string) {
   return apiFetch<GetProfileResponse>(`/profiles/${username}`);

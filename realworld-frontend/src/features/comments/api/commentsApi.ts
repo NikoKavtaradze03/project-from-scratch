@@ -20,6 +20,11 @@ type GetCommentsResponse = {
 type CreateCommentResponse = {
   comment: Comment;
 };
+import { apiFetch } from "@/lib/api";
+import type {
+  GetCommentsResponse,
+  CreateCommentResponse,
+} from "../types/commentsTypes";
 
 export function getComments(slug: string) {
   return apiFetch<GetCommentsResponse>(`/articles/${slug}/comments`);
