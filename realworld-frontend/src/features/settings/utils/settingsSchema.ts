@@ -22,7 +22,7 @@ export const settingsSchema = z.object({
 
   username: z.string().trim().min(1, "Username is required"),
 
-  bio: z.string().trim().max(500, "Bio must be under 500 characters"),
+  bio: z.string().trim().max(1000, "Bio must be under 500 characters"),
 
   email: z
     .string()

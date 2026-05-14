@@ -4,7 +4,8 @@ import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteComment, type Comment } from "../api/commentsApi";
+import { deleteComment } from "../api/commentsApi";
+import type { Comment } from "../types/commentsTypes";
 import { queryKeys } from "@/lib/queryKeys";
 
 type CommentListProps = {

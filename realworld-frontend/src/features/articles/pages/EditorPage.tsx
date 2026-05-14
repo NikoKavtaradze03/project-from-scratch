@@ -6,12 +6,9 @@ import PageHeader from "@/components/layout/PageHeader";
 import { queryKeys } from "@/lib/queryKeys";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 
-import {
-  createArticle,
-  getArticle,
-  updateArticle,
-  type Article,
-} from "../api/articlesApi";
+import { createArticle, getArticle, updateArticle } from "../api/articlesApi";
+
+import type { Article } from "../types/articlesTypes";
 
 import ArticleEditorForm, {
   type ArticleEditorFormValues,

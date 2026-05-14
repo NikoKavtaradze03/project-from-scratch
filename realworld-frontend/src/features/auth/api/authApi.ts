@@ -1,21 +1,11 @@
 import { apiFetch } from "@/lib/api";
-
-type LoginCredentials = {
-  email: string;
-  password: string;
-};
-
-export type User = {
-  email: string;
-  token: string;
-  username: string;
-  bio: string | null;
-  image: string | null;
-};
-
-type AuthResponse = {
-  user: User;
-};
+import type {
+  LoginCredentials,
+  AuthResponse,
+  RegisterCredentials,
+  UpdateUserInput,
+  UpdateUserResponse,
+} from "../types/authTypes";
 
 export function loginUser(credentials: LoginCredentials) {
   return apiFetch<AuthResponse>("/users/login", {
@@ -25,12 +15,6 @@ export function loginUser(credentials: LoginCredentials) {
     }),
   });
 }
-
-type RegisterCredentials = {
-  username: string;
-  email: string;
-  password: string;
-};
 
 export function registerUser(credentials: RegisterCredentials) {
   return apiFetch<AuthResponse>("/users", {
@@ -44,18 +28,6 @@ export function registerUser(credentials: RegisterCredentials) {
 export function getCurrentUser() {
   return apiFetch<AuthResponse>("/user");
 }
-
-type UpdateUserInput = {
-  email?: string;
-  username?: string;
-  password?: string;
-  bio?: string;
-  image?: string;
-};
-
-type UpdateUserResponse = {
-  user: User;
-};
 
 export function updateUser(input: UpdateUserInput) {
   return apiFetch<UpdateUserResponse>("/user", {

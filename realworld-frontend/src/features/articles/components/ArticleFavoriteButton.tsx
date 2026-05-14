@@ -1,11 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  favoriteArticle,
-  unfavoriteArticle,
-  type Article,
-} from "../api/articlesApi";
+import { favoriteArticle, unfavoriteArticle } from "../api/articlesApi";
+import type { Article } from "../types/articlesTypes";
 import { queryKeys } from "@/lib/queryKeys";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { useNavigate } from "@tanstack/react-router";
