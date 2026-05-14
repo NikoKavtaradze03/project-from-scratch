@@ -14,6 +14,7 @@ import { updateUser } from "@/features/auth/api/authApi";
 import SettingsForm, {
   type SettingsFormValues,
 } from "../components/SettingsForm";
+import SettingsFormSkeleton from "../components/SettingsFormSkeleton";
 
 function SettingsPage() {
   const navigate = useNavigate();
@@ -57,10 +58,12 @@ function SettingsPage() {
   if (isLoading) {
     return (
       <main>
-        <PageContainer>
-          <p className="text-sm text-(--color-text-muted)">
-            Loading settings...
-          </p>
+        <PageContainer variant="reading">
+          <PageHeader
+            title="Settings"
+            description="Update your profile and account information."
+          />
+          <SettingsFormSkeleton />
         </PageContainer>
       </main>
     );
