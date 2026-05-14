@@ -1,3 +1,25 @@
+import { apiFetch, apiFetchVoid } from "@/lib/api";
+
+export type Comment = {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  body: string;
+  author: {
+    username: string;
+    bio: string | null;
+    image: string | null;
+    following: boolean;
+  };
+};
+
+type GetCommentsResponse = {
+  comments: Comment[];
+};
+
+type CreateCommentResponse = {
+  comment: Comment;
+};
 import { apiFetch } from "@/lib/api";
 import type {
   GetCommentsResponse,
@@ -20,7 +42,7 @@ export function createComment(slug: string, body: string) {
 }
 
 export function deleteComment(slug: string, commentId: number) {
-  return apiFetch(`/articles/${slug}/comments/${commentId}`, {
+  return apiFetchVoid(`/articles/${slug}/comments/${commentId}`, {
     method: "DELETE",
   });
 }
