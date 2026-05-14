@@ -1,4 +1,4 @@
-import { apiFetch } from "@/lib/api";
+import { axiosFetch } from "@/lib/axios-api";
 import type {
   LoginCredentials,
   AuthResponse,
@@ -8,32 +8,32 @@ import type {
 } from "../types/authTypes";
 
 export function loginUser(credentials: LoginCredentials) {
-  return apiFetch<AuthResponse>("/users/login", {
+  return axiosFetch<AuthResponse>("/users/login", {
     method: "POST",
-    body: JSON.stringify({
+    body: {
       user: credentials,
-    }),
+    },
   });
 }
 
 export function registerUser(credentials: RegisterCredentials) {
-  return apiFetch<AuthResponse>("/users", {
+  return axiosFetch<AuthResponse>("/users", {
     method: "POST",
-    body: JSON.stringify({
+    body: {
       user: credentials,
-    }),
+    },
   });
 }
 
 export function getCurrentUser() {
-  return apiFetch<AuthResponse>("/user");
+  return axiosFetch<AuthResponse>("/user");
 }
 
 export function updateUser(input: UpdateUserInput) {
-  return apiFetch<UpdateUserResponse>("/user", {
+  return axiosFetch<UpdateUserResponse>("/user", {
     method: "PUT",
-    body: JSON.stringify({
+    body: {
       user: input,
-    }),
+    },
   });
 }

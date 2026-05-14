@@ -1,9 +1,9 @@
-import { apiFetch } from "@/lib/api";
+import { axiosFetch } from "@/lib/axios-api";
 
 type getTagsResponse = {
   tags: string[];
 };
 
 export function getTags() {
-  return apiFetch<getTagsResponse>("/tags");
+  return axiosFetch<getTagsResponse>("/tags");
 }
