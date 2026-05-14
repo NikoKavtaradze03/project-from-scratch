@@ -6,6 +6,7 @@ import { queryKeys } from "@/lib/queryKeys";
 import { getProfile } from "../api/profileApi";
 import { ProfileTabs } from "../components/ProfileTabs";
 import { ProfileHeader } from "../components/ProfileHeader";
+import ProfilePageSkeleton from "../components/ProfilePageSkeleton";
 
 function ProfilePage() {
   const { username } = useParams({ from: "/_app/profile/$username" });
@@ -23,9 +24,7 @@ function ProfilePage() {
     return (
       <main>
         <PageContainer>
-          <p className="text-sm text-(--color-text-muted)">
-            Loading profile...
-          </p>
+          <ProfilePageSkeleton />
         </PageContainer>
       </main>
     );

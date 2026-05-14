@@ -12,6 +12,7 @@ import ArticleContent from "../components/ArticleContent";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import ArticleActions from "../components/ArticleActions";
 import ArticleComments from "@/features/comments/components/ArticleComments";
+import ArticlePageSkeleton from "../components/ArticlePageSkeleton";
 
 function ArticlePageMessage({ children }: { children: ReactNode }) {
   return (
@@ -36,11 +37,7 @@ function ArticlePage() {
   const { data: currentUserResponse } = useCurrentUser();
 
   if (isLoading) {
-    return (
-      <ArticlePageMessage>
-        <p className="text-sm text-(--color-text-muted)">Loading article...</p>
-      </ArticlePageMessage>
-    );
+    return <ArticlePageSkeleton />;
   }
 
   if (isError || !articleResponse) {

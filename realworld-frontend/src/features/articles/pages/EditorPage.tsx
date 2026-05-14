@@ -13,6 +13,7 @@ import type { Article } from "../types/articlesTypes";
 import ArticleEditorForm, {
   type ArticleEditorFormValues,
 } from "../components/ArticleEditorForm";
+import ArticleEditorFormSkeleton from "../components/ArticleEditorFormSkeleton";
 
 function getArticleEditorInitialValues(
   article: Article,
@@ -82,8 +83,16 @@ function EditorPage(props: EditorPageProps) {
   if (isCurrentUserLoading) {
     return (
       <main>
-        <PageContainer>
-          <p className="text-sm text-(--color-text-muted)">Loading...</p>
+        <PageContainer variant="reading">
+          <PageHeader
+            title={isEditMode ? "Edit Article" : "New Article"}
+            description={
+              isEditMode
+                ? "Update your article and publish the changes."
+                : "Write and publish a new article."
+            }
+          />
+          <ArticleEditorFormSkeleton />
         </PageContainer>
       </main>
     );
@@ -96,10 +105,12 @@ function EditorPage(props: EditorPageProps) {
   if (isEditMode && isArticleLoading) {
     return (
       <main>
-        <PageContainer>
-          <p className="text-sm text-(--color-text-muted)">
-            Loading article...
-          </p>
+        <PageContainer variant="reading">
+          <PageHeader
+            title="Edit Article"
+            description="Update your article and publish the changes."
+          />
+          <ArticleEditorFormSkeleton />
         </PageContainer>
       </main>
     );
