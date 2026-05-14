@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/queryKeys";
 import { getTags } from "../api/tagsApi";
 import TagList from "./TagList";
+import TagsSkeleton from "./TagsSkeleton";
 
 function PopularTagsCard() {
   const {
@@ -21,7 +22,7 @@ function PopularTagsCard() {
           <CardTitle>Popular Tags</CardTitle>
         </CardHeader>
         <CardContent className="pt-3">
-          <p className="text-sm text-(--color-text-muted)">Loading tags...</p>
+          <TagsSkeleton />
         </CardContent>
       </Card>
     );
