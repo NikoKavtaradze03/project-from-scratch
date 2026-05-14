@@ -80,6 +80,34 @@ function EditorPage(props: EditorPageProps) {
     },
   });
 
+  const initialValues =
+    isEditMode && articleResponse
+      ? getArticleEditorInitialValues(articleResponse.article)
+      : undefined;
+
+  async function handleSubmit(values: ArticleEditorFormValues) {
+    const tagList = parseArticleTags(values.tagList);
+
+    if (isEditMode && slug) {
+      await updateArticleMutation.mutateAsync({
+        slug,
+        title: values.title,
+        description: values.description,
+        body: values.body,
+        tagList,
+      });
+
+      return;
+    }
+
+    await createArticleMutation.mutateAsync({
+      title: values.title,
+      description: values.description,
+      body: values.body,
+      tagList,
+    });
+  }
+
   if (isCurrentUserLoading) {
     return (
       <main>
@@ -114,34 +142,6 @@ function EditorPage(props: EditorPageProps) {
         </PageContainer>
       </main>
     );
-  }
-
-  const initialValues =
-    isEditMode && articleResponse
-      ? getArticleEditorInitialValues(articleResponse.article)
-      : undefined;
-
-  async function handleSubmit(values: ArticleEditorFormValues) {
-    const tagList = parseArticleTags(values.tagList);
-
-    if (isEditMode && slug) {
-      await updateArticleMutation.mutateAsync({
-        slug,
-        title: values.title,
-        description: values.description,
-        body: values.body,
-        tagList,
-      });
-
-      return;
-    }
-
-    await createArticleMutation.mutateAsync({
-      title: values.title,
-      description: values.description,
-      body: values.body,
-      tagList,
-    });
   }
 
   return (
