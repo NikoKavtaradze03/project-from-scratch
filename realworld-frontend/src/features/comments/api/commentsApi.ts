@@ -11,16 +11,16 @@ export function getComments(slug: string) {
 export function createComment(slug: string, body: string) {
   return axiosFetch<CreateCommentResponse>(`/articles/${slug}/comments`, {
     method: "POST",
-    body: JSON.stringify({
+    body: {
       comment: {
         body,
       },
-    }),
+    },
   });
 }
 
 export function deleteComment(slug: string, commentId: number) {
-  return axiosFetch(`/articles/${slug}/comments/${commentId}`, {
+  return axiosFetch<void>(`/articles/${slug}/comments/${commentId}`, {
     method: "DELETE",
   });
 }

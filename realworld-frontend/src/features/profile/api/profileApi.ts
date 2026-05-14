@@ -6,9 +6,13 @@ export function getProfile(username: string) {
 }
 
 export function followProfile(username: string) {
-  return axiosFetch(`/profiles/${username}/follow`, { method: "POST" });
+  return axiosFetch<GetProfileResponse>(`/profiles/${username}/follow`, {
+    method: "POST",
+  });
 }
 
 export function unfollowProfile(username: string) {
-  return axiosFetch(`/profiles/${username}/follow`, { method: "DELETE" });
+  return axiosFetch<GetProfileResponse>(`/profiles/${username}/follow`, {
+    method: "DELETE",
+  });
 }
