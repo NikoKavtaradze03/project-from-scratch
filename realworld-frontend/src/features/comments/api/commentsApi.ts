@@ -1,26 +1,4 @@
 import { apiFetch, apiFetchVoid } from "@/lib/api";
-
-export type Comment = {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
-  body: string;
-  author: {
-    username: string;
-    bio: string | null;
-    image: string | null;
-    following: boolean;
-  };
-};
-
-type GetCommentsResponse = {
-  comments: Comment[];
-};
-
-type CreateCommentResponse = {
-  comment: Comment;
-};
-import { apiFetch } from "@/lib/api";
 import type {
   GetCommentsResponse,
   CreateCommentResponse,

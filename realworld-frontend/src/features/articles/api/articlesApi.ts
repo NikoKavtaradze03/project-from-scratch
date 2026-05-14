@@ -1,36 +1,4 @@
 import { apiFetch, apiFetchVoid } from "@/lib/api";
-
-export type Article = {
-  slug: string;
-  title: string;
-  description: string;
-  body: string;
-  tagList: string[];
-  createdAt: string;
-  updatedAt: string;
-  favorited: boolean;
-  favoritesCount: number;
-  author: {
-    username: string;
-    bio: string | null;
-    image: string | null;
-    following: boolean;
-  };
-};
-
-type GetArticlesResponse = {
-  articles: Article[];
-  articlesCount: number;
-};
-
-type GetArticlesParams = {
-  page?: number;
-  limit?: number;
-  author?: string;
-  favorited?: string;
-  tag?: string;
-};
-import { apiFetch } from "@/lib/api";
 import type {
   CreateArticleInput,
   CreateArticleResponse,
